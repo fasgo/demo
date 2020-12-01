@@ -1,3 +1,5 @@
+如果无法查看图片, 请跳转博客正文: [https://www.cnblogs.com/zolo/p/14040720.html](https://www.cnblogs.com/zolo/p/14040720.html)
+
 # 前述
 
 本教程只说"实践",不谈"理论". 如果哪位觉得有趣, 可以加本人QQ(1255422783)详细交流!
