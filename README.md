@@ -20,37 +20,296 @@
 ## 开发步骤
 
 ### 第1步: Goland启用"GoModule"支持
+
+Settings > Go > Go Modules > 打勾 Enable go modules intergration
+
 ![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_201201042153enable-go-module.jpg)
 
 
 ### 第2步: 根据需求定义proto
-![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422445-define-proto.jpg)
+```
+syntax = "proto3";
+
+package api;
+
+// 学生数据结构
+message Student {
+  uint64 sno = 1;   // 学生编号
+  string name = 2;  // 学生名称
+  uint32 age = 3;   // 学生年龄
+  bool   male = 4;  // 性别为男
+  string desc = 5;  // 学生介绍
+}
+
+// 搜索请求
+message AllReq {
+  int32 from = 1; // 分页开始下标(从0开始)
+  int32 size = 2; // 分页大小
+  string search = 3; // 模糊查询的输入内容
+  string field = 4; // 查询结果排序字段
+  bool desc = 5; // 查询结果排序是否DESC
+}
+
+// 搜索响应
+message AllRsp{
+  int32  total = 1; //查询结果总数
+  repeated Student data = 2; // 查询结果数据
+}
+
+// 所有方法都支持+JSON与+FORM,根据需求灵活配置
+// 1. +JSON(Content-Type:application/json)
+// 2. +FORM(Content-Type:application/x-www-form-urlencode或multipart/form-data)
+service StudentService {
+  // +POST /demo/students
+  rpc Add(Student) returns (Student);
+  // +DELETE /demo/students/:sno
+  rpc Del(Student) returns (Student);
+  // +PUT /demo/students/:sno
+  rpc Upd(Student) returns (Student);
+  // +WBSK /demo/student/ws
+  // +GET /demo/students/:sno
+  rpc Get(Student) returns (Student);
+  // +GET /demo/students
+  rpc All(AllReq) returns (AllRsp);
+}
+
+```
 
 ### 第3步: 进入项目执行protogen
-![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422152-execute-protogen.jpg)
+项目结构:
+```
+E:\temp
+|__api
+|__biz
+|__test-client
+|__conf.toml
+|__go.mod
+|__go.sum
+|__main.go
+|__README.md
+```
 
-****注意****: 如果是首次执行需要下载PB所需的插件, 过程为稍慢, 请耐心等待!
+进入项目目录执行protogen, 首次执行会下载相关的插件, 过程稍慢, 请耐心稍等!
+```
+E:\temp>protogen
+2020-12-01 11:43:18 [I] - fetch https://maven.aliyun.com/repository/central/com/google/protobuf/protoc/3.14.0/protoc-3.14.0-windows-x86_64.exe
+2020-12-01 11:43:23 [I] - goget google.golang.org/protobuf/cmd/protoc-gen-go@v1.25.0
+go: downloading google.golang.org/protobuf v1.25.0
+go: found google.golang.org/protobuf/cmd/protoc-gen-go in google.golang.org/protobuf v1.25.0
+2020-12-01 11:43:38 [I] - goget google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.0.1
+go: downloading google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.0.1
+go: downloading google.golang.org/grpc v1.33.2
+go: downloading google.golang.org/protobuf v1.25.0
+2020-12-01 11:44:02 [I] - goget github.com/fasgo/protoapi/cmd/protoc-gen-go-http@v1.25.0-0.1.1
+go: downloading github.com/fasgo/protoapi/cmd/protoc-gen-go-http v1.25.0-0.1.1
+go: downloading github.com/fasgo/protoapi v0.0.2
+go: downloading google.golang.org/protobuf v1.25.0
+2020-12-01 11:44:18 [I] - build E:\temp\api\student.proto
+```
+
+****注意****: 如果你用Goland,可以打开Terminal控制台操作会更方便:
 ![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422314-first-protogen.jpg)
 
 ### 第4步: 复制service模板
-![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422506-copy-service-template.jpg)
+```
+import (
+	"context"
+)
+type StudentServiceService struct {
+	*api.UnimplementedStudentServiceServer
+}
+var _ api.StudentServiceServer = (*StudentServiceService)(nil)
+func (s *StudentServiceService) Add(ctx context.Context, req *api.Student) (rsp *api.Student, err error) {
+	return
+}
+func (s *StudentServiceService) Del(ctx context.Context, req *api.Student) (rsp *api.Student, err error) {
+	return
+}
+func (s *StudentServiceService) Upd(ctx context.Context, req *api.Student) (rsp *api.Student, err error) {
+	return
+}
+func (s *StudentServiceService) Get(ctx context.Context, req *api.Student) (rsp *api.Student, err error) {
+	return
+}
+func (s *StudentServiceService) All(ctx context.Context, req *api.AllReq) (rsp *api.AllRsp, err error) {
+	return
+}
+```
 
-****注意****: 在xxxx_http.pb.go(例如stduent_http.pb.go)最后会生成service的实现模板, 直接将其复制到自己的biz代码即可!
+****注意****: 
+为每个proto文件生成的在xxxx_http.pb.go(例如stduent_http.pb.go)的最后会有service的实现模板!
+开发人员直接将其复制到自己的biz代码即可, 这样可以大大提高开发效率!
 
 ### 第5步: 实现service逻辑
-![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422567-implement-service.jpg)
+```
+package biz
+
+import (
+	"context"
+	"fmt"
+	"github.com/fasgo/base"
+	"github.com/fasgo/demo/api"
+)
+
+type StudentServiceService struct {
+	*api.UnimplementedStudentServiceServer
+}
+
+var _ api.StudentServiceServer = (*StudentServiceService)(nil)
+
+func (s *StudentServiceService) Add(ctx context.Context, req *api.Student) (rsp *api.Student, err error) {
+	fmt.Println(base.Json(req))
+	rsp = req
+	return
+}
+func (s *StudentServiceService) Del(ctx context.Context, req *api.Student) (rsp *api.Student, err error) {
+	fmt.Println(base.Json(req))
+	rsp = req
+	return
+}
+func (s *StudentServiceService) Upd(ctx context.Context, req *api.Student) (rsp *api.Student, err error) {
+	fmt.Println(base.Json(req))
+	rsp = req
+	return
+}
+func (s *StudentServiceService) Get(ctx context.Context, req *api.Student) (rsp *api.Student, err error) {
+	fmt.Println(base.Json(req))
+	rsp = req
+	return
+}
+func (s *StudentServiceService) All(ctx context.Context, req *api.AllReq) (rsp *api.AllRsp, err error) {
+	fmt.Println(base.Json(req))
+	rsp = new(api.AllRsp)
+	return
+}
+
+```
 
 ### 第6步: 注册service实例, 并启动服务
-![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010423038-register-service.jpg)
+```
+package main
+
+import (
+	"github.com/fasgo/demo/api"
+	"github.com/fasgo/demo/biz"
+	"github.com/fasgo/protoapi"
+)
+
+func main() {
+	// 1. 创建server. 可以从conf配置， 也可以编程配置
+	//s := serverWithConfig()
+	s := serverWithConfToml()
+
+	// 2. 注册服务实现. 每个service会有对应的Registry/Implement注册到server
+	s.RegisterService(api.StudentServiceRegistry, new(biz.StudentServiceService))
+
+	// 3. 监听与服务
+	if err := s.ListenAndServe(); err != nil {
+		panic(err)
+	}
+}
+
+// 从conf.toml加载配置
+func serverWithConfToml() *protoapi.Server {
+	// load config from conf.toml
+	s := protoapi.NewServer()
+	return s
+}
+
+// 自己定义配置
+func serverWithConfig() *protoapi.Server {
+	c := &protoapi.Config{
+		HttpAddr:        ":80",
+		GrpcAddr:        ":90",
+		WbskCheckOrigin: -1,
+	}
+	s := protoapi.NewServerWith(c)
+	return s
+}
+
+```
 
 ### 第7步: 客户端连接测试
 - grpc client
-![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010528099-grpc-client.jpg)
+```
+package main
+
+import (
+	"context"
+	"fmt"
+	"github.com/fasgo/demo/api"
+	"google.golang.org/grpc"
+)
+
+func main() {
+	conn, err := grpc.Dial("127.0.0.1:90", grpc.WithInsecure(), grpc.WithBlock())
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+
+	client := api.NewStudentServiceClient(conn)
+
+	req := &api.Student{
+		Name: "小王",
+	}
+
+	rsp, err := client.Add(context.Background(), req)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%+v\n", rsp)
+}
+
+/*
+输出:
+Load conf success: E:\temp\conf.toml
+name:"小王"
+*/
+
+```
 
 - http client
-![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_20120105281510-http-client.jpg)
+```
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"github.com/fasgo/demo/api"
+	"io"
+	"net/http"
+	"os"
+)
+
+func main() {
+	tag := &api.Student{
+		Name: "demo",
+	}
+	bs, _ := json.Marshal(tag)
+	rsp, err := http.Post("http://127.0.0.1/demo/students", "application/json", bytes.NewReader(bs))
+	if err != nil {
+		panic(err)
+	}
+	defer rsp.Body.Close()
+
+	fmt.Println(rsp.Proto, rsp.Status)
+	io.Copy(os.Stdout, rsp.Body)
+}
+
+/*
+输出:
+Load conf success: E:\temp\conf.toml
+HTTP/1.1 200 OK
+{"code":0,"data":{"name":"demo"},"tag":"StudentService.Add"}
+*/
+```
 
 - websocket client
+
+这里使用chrome的smart websocket client:
 ![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_20120105282111-websoket-client.jpg)
 
 ## 搭建环境
