@@ -1,17 +1,65 @@
-# Go使用protocolbuffer快速开发api服务DEMO
+# 前述
 
-- 本教程就是以"protogen + protoapi"为基础介绍如何快速构建api服务!
-- step-by-step教程:[Go使用protocolbuffer快速构建api服务教程](https://www.cnblogs.com/zolo/p/14066444.html)
+本教程只说"实践",不谈"理论". 如果哪位觉得有趣, 可以加本人QQ(1255422783)详细交流!
 
-# 搭建环境
+# 问题
 
-## 第1步: 下载安装Go 1.15
+对于后端开发, 经常"众口难调". 一套业务逻辑却要三套不同实现API!
+
+- 网页端要"http(json) api"(如restful api)
+- 移动端要"websocket api"
+- 服务端要"grpc api"
+
+# 正题
+
+本教程主要介绍如何使用"protogen + protoapi"的开发步骤. 
+源码仓库:[https://github.com/fasgo/demo](https://github.com/fasgo/demo)
+
+## 开发步骤
+
+### 第1步: Goland启用"GoModule"支持
+![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_201201042153enable-go-module.jpg)
+
+
+### 第2步: 根据需求定义proto
+![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422445-define-proto.jpg)
+
+### 第3步: 进入项目执行protogen
+![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422152-execute-protogen.jpg)
+
+****注意****: 如果是首次执行需要下载PB所需的插件, 过程为稍慢, 请耐心等待!
+![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422314-first-protogen.jpg)
+
+### 第4步: 复制service模板
+![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422506-copy-service-template.jpg)
+
+****注意****: 在xxxx_http.pb.go(例如stduent_http.pb.go)最后会生成service的实现模板, 直接将其复制到自己的biz代码即可!
+
+### 第5步: 实现service逻辑
+![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422567-implement-service.jpg)
+
+### 第6步: 注册service实例, 并启动服务
+![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010423038-register-service.jpg)
+
+### 第7步: 客户端连接测试
+- grpc client
+![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010528099-grpc-client.jpg)
+
+- http client
+![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_20120105281510-http-client.jpg)
+
+- websocket client
+![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_20120105282111-websoket-client.jpg)
+
+## 搭建环境
+
+### 第1步: 下载安装Go 1.15
 
 [GO下载页面: https://golang.google.cn/dl/](https://golang.google.cn/dl/)
 
 详情不再赘述! Go都不会安装, 哪还能说啥?
 
-## 第2步: 下载安装protogen
+### 第2步: 下载安装protogen
 
 - protogen介绍
     
@@ -88,32 +136,10 @@
             打印版本
     ```
 
-## 第3步: 下载项目源码
+### 第3步: 下载项目源码
 
 ```
 git clone https://github.com/fasgo/demo.git e:\temp\
 ```
 
 step-by-step教程:[Go使用protocolbuffer快速构建api服务教程](https://www.cnblogs.com/zolo/p/14066444.html)
-
-
-## 注意事项:
-
-- 第1次执行会自动下载protoc, protoc-gen-go, protoc-gen-go-grpc, protoc-gen-go-http, 过程可能会慢点, 请耐心等待!
-```
-E:\temp>protogen
-2020-12-01 11:43:18 [I] - fetch https://maven.aliyun.com/repository/central/com/google/protobuf/protoc/3.14.0/protoc-3.14.0-windows-x86_64.exe
-2020-12-01 11:43:23 [I] - goget google.golang.org/protobuf/cmd/protoc-gen-go@v1.25.0
-go: downloading google.golang.org/protobuf v1.25.0
-go: found google.golang.org/protobuf/cmd/protoc-gen-go in google.golang.org/protobuf v1.25.0
-2020-12-01 11:43:38 [I] - goget google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.0.1
-go: downloading google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.0.1
-go: downloading google.golang.org/grpc v1.33.2
-go: downloading google.golang.org/protobuf v1.25.0
-2020-12-01 11:44:02 [I] - goget github.com/fasgo/protoapi/cmd/protoc-gen-go-http@v1.25.0-0.1.1
-go: downloading github.com/fasgo/protoapi/cmd/protoc-gen-go-http v1.25.0-0.1.1
-go: downloading github.com/fasgo/protoapi v0.0.2
-go: downloading google.golang.org/protobuf v1.25.0
-2020-12-01 11:44:18 [I] - build E:\temp\api\student.proto
-
-```
