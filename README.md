@@ -1,4 +1,4 @@
-如果无法查看图片, 请跳转博客正文: [https://www.cnblogs.com/zolo/articles/14066444.html](https://www.cnblogs.com/zolo/articles/14066444.html)
+如果无法查看图片, 请跳转博客正文: [https://www.cnblogs.com/zolo/p/14066444.html](https://www.cnblogs.com/zolo/p/14066444.html)
 
 # 前述
 
