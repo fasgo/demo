@@ -107,6 +107,11 @@ go: downloading google.golang.org/protobuf v1.25.0
 2020-12-01 11:44:18 [I] - build E:\temp\api\student.proto
 ```
 
+执行protogen后, 会在proto文档所在目录生成: 
+- xxx.pb.go: 使用protoc-gen-go生成的PB源码
+- xxx_grpc.pb.go: 使用protoc-gen-go-grpc生成的GRPC源码
+- xxx_http.pb.go: 使用protoc-gen-go-http生成的http适配代码, 后面的http实现就靠它了!!!
+
 ****注意****: 如果你用Goland,可以打开Terminal控制台操作会更方便:
 ![image](https://images.cnblogs.com/cnblogs_com/zolo/907331/o_2012010422314-first-protogen.jpg)
 
