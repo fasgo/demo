@@ -31,13 +31,13 @@ message AllRsp{
 // 2. +FORM(Content-Type:application/x-www-form-urlencode或multipart/form-data)
 service StudentService {
   // +POST /demo/students
-  rpc Add(Student) returns (Student); // 返回带tagid的Tag
+  rpc Add(Student) returns (Student);
   // +DELETE /demo/students/:sno
-  rpc Del(Student) returns (Student); // 返回被删除的Tag
+  rpc Del(Student) returns (Student);
   // +PUT /demo/students/:sno
-  rpc Upd(Student) returns (Student); // 返回被修改的Tag
+  rpc Upd(Student) returns (Student);
   // +GET /demo/students/:sno
-  rpc Get(Student) returns (Student); // 根据tagid或其他业务主键获取相应的Tag
+  rpc Get(Student) returns (Student);
   // +GET /demo/students
-  rpc All(AllReq) returns (AllRsp); // 支持分页查询及模糊过滤
+  rpc All(AllReq) returns (AllRsp);
 }
