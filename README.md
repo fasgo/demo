@@ -95,3 +95,25 @@ git clone https://github.com/fasgo/demo.git e:\temp\
 ```
 
 step-by-step教程:[Go使用protocolbuffer快速构建api服务教程](https://www.cnblogs.com/zolo/p/14066444.html)
+
+
+## 注意事项:
+
+- 第1次执行会自动下载protoc, protoc-gen-go, protoc-gen-go-grpc, protoc-gen-go-http, 过程可能会慢点, 请耐心等待!
+```
+E:\temp>protogen
+2020-12-01 11:43:18 [I] - fetch https://maven.aliyun.com/repository/central/com/google/protobuf/protoc/3.14.0/protoc-3.14.0-windows-x86_64.exe
+2020-12-01 11:43:23 [I] - goget google.golang.org/protobuf/cmd/protoc-gen-go@v1.25.0
+go: downloading google.golang.org/protobuf v1.25.0
+go: found google.golang.org/protobuf/cmd/protoc-gen-go in google.golang.org/protobuf v1.25.0
+2020-12-01 11:43:38 [I] - goget google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.0.1
+go: downloading google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.0.1
+go: downloading google.golang.org/grpc v1.33.2
+go: downloading google.golang.org/protobuf v1.25.0
+2020-12-01 11:44:02 [I] - goget github.com/fasgo/protoapi/cmd/protoc-gen-go-http@v1.25.0-0.1.1
+go: downloading github.com/fasgo/protoapi/cmd/protoc-gen-go-http v1.25.0-0.1.1
+go: downloading github.com/fasgo/protoapi v0.0.2
+go: downloading google.golang.org/protobuf v1.25.0
+2020-12-01 11:44:18 [I] - build E:\temp\api\student.proto
+
+```

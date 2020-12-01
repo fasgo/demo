@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package api;
+
+// 学生数据结构
+message Student {
+  uint64 sno = 1;   // 学生编号
+  string name = 2;  // 学生名称
+  uint32 age = 3;   // 学生年龄
+  bool   male = 4;  // 性别为男
+  string desc = 5;  // 学生介绍
+}
+
+// 搜索请求
+message AllReq {
+  int32 from = 1; // 分页开始下标(从0开始)
+  int32 size = 2; // 分页大小
+  string search = 3; // 模糊查询的输入内容
+  string field = 4; // 查询结果排序字段
+  bool desc = 5; // 查询结果排序是否DESC
+}
+
+// 搜索响应
+message AllRsp{
+  int32  total = 1; //查询结果总数
+  repeated Student data = 2; // 查询结果数据
+}
+
+// 所有方法都支持+JSON与+FORM,根据需求灵活配置
+// 1. +JSON(Content-Type:application/json)
+// 2. +FORM(Content-Type:application/x-www-form-urlencode或multipart/form-data)
+service StudentService {
+  // +POST /demo/students
+  rpc Add(Student) returns (Student); // 返回带tagid的Tag
+  // +DELETE /demo/students/:sno
+  rpc Del(Student) returns (Student); // 返回被删除的Tag
+  // +PUT /demo/students/:sno
+  rpc Upd(Student) returns (Student); // 返回被修改的Tag
+  // +GET /demo/students/:sno
+  rpc Get(Student) returns (Student); // 根据tagid或其他业务主键获取相应的Tag
+  // +GET /demo/students
+  rpc All(AllReq) returns (AllRsp); // 支持分页查询及模糊过滤
+}
