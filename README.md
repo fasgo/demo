@@ -91,7 +91,7 @@
 ## 第3步: 下载项目源码
 
 ```
-git clone https://github.com/fasgo/demo.git
+git clone https://github.com/fasgo/demo.git e:\temp\
 ```
 
 step-by-step教程:[Go使用protocolbuffer快速构建api服务教程](https://www.cnblogs.com/zolo/p/14066444.html)
