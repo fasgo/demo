@@ -2,7 +2,7 @@
 // Versions:
 // 	protoc-gen-go v1.25.0
 // 	protoc        v3.14.0
-// Modified at 2020-12-01 11:44:19
+// Modified at 2020-12-01 13:07:24
 
 package api
 
@@ -97,6 +97,22 @@ func StudentServiceRegistry(impl interface{}) (*grpc.ServiceDesc, []*protoapi.Ht
 		hd.GETFunc = func(ctx *protoapi.Context, in io.Reader) (interface{}, error) {
 			req := new(Student)
 			protoapi.ParamUint64(ctx, `sno`, &req.Sno)
+			if ctx.Request.URL.RawQuery != `` {
+				protoapi.QueryUint64(ctx, `sno`, &req.Sno)
+				protoapi.QueryString(ctx, `name`, &req.Name)
+				protoapi.QueryUint32(ctx, `age`, &req.Age)
+				protoapi.QueryBool(ctx, `male`, &req.Male)
+				protoapi.QueryString(ctx, `desc`, &req.Desc)
+			}
+			err := json.NewDecoder(in).Decode(req)
+			if err != nil && err != io.EOF {
+				return nil, err
+			}
+			return svc.Get(ctx, req)
+		}
+		hd.WBSKPath = `/demo/student/ws`
+		hd.WBSKFunc = func(ctx *protoapi.Context, in io.Reader) (interface{}, error) {
+			req := new(Student)
 			if ctx.Request.URL.RawQuery != `` {
 				protoapi.QueryUint64(ctx, `sno`, &req.Sno)
 				protoapi.QueryString(ctx, `name`, &req.Name)

@@ -30,8 +30,9 @@ func serverWithConfToml() *protoapi.Server {
 // 自己定义配置
 func serverWithConfig() *protoapi.Server {
 	c := &protoapi.Config{
-		HttpAddr: ":80",
-		GrpcAddr: ":90",
+		HttpAddr:        ":80",
+		GrpcAddr:        ":90",
+		WbskCheckOrigin: -1,
 	}
 	s := protoapi.NewServerWith(c)
 	return s

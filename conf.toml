@@ -1,3 +1,4 @@
 [protoapi]
 http_addr = ":80"
 grpc_addr = ":90"
+wbsk_check_origin = -1

@@ -36,6 +36,7 @@ service StudentService {
   rpc Del(Student) returns (Student);
   // +PUT /demo/students/:sno
   rpc Upd(Student) returns (Student);
+  // +WBSK /demo/student/ws
   // +GET /demo/students/:sno
   rpc Get(Student) returns (Student);
   // +GET /demo/students
