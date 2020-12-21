@@ -2,35 +2,35 @@
 // Versions:
 // 	protoc-gen-go v1.25.0
 // 	protoc        v3.14.0
-// Modified at 2020-12-01 13:07:24
+// Modified at 2020-12-21 16:14:19
 
 package api
 
 import (
 	json "encoding/json"
-	protoapi "github.com/fasgo/protoapi"
+	http "github.com/fasgo/http"
 	grpc "google.golang.org/grpc"
 	io "io"
 )
 
-func StudentServiceRegistry(impl interface{}) (*grpc.ServiceDesc, []*protoapi.HttpDesc) {
+func StudentServiceRegistry(impl interface{}) (*grpc.ServiceDesc, []*http.HttpDesc) {
 	var svc = impl.(StudentServiceServer)
-	var hds []*protoapi.HttpDesc
-	var hd *protoapi.HttpDesc
+	var hds []*http.HttpDesc
+	var hd *http.HttpDesc
 	{
-		hd = new(protoapi.HttpDesc)
+		hd = new(http.HttpDesc)
 		hd.Package = `api`
 		hd.Service = `StudentService`
 		hd.Method = `Add`
-		hd.POSTPath = `/demo/students`
-		hd.POSTFunc = func(ctx *protoapi.Context, in io.Reader) (interface{}, error) {
+		hd.PostPath = `/demo/students`
+		hd.PostFunc = func(ctx *http.Context, in io.Reader) (interface{}, error) {
 			req := new(Student)
 			if ctx.Request.URL.RawQuery != `` {
-				protoapi.QueryUint64(ctx, `sno`, &req.Sno)
-				protoapi.QueryString(ctx, `name`, &req.Name)
-				protoapi.QueryUint32(ctx, `age`, &req.Age)
-				protoapi.QueryBool(ctx, `male`, &req.Male)
-				protoapi.QueryString(ctx, `desc`, &req.Desc)
+				http.QueryUint64(ctx, `sno`, &req.Sno)
+				http.QueryString(ctx, `name`, &req.Name)
+				http.QueryUint32(ctx, `age`, &req.Age)
+				http.QueryBool(ctx, `male`, &req.Male)
+				http.QueryString(ctx, `desc`, &req.Desc)
 			}
 			err := json.NewDecoder(in).Decode(req)
 			if err != nil && err != io.EOF {
@@ -41,20 +41,20 @@ func StudentServiceRegistry(impl interface{}) (*grpc.ServiceDesc, []*protoapi.Ht
 		hds = append(hds, hd)
 	}
 	{
-		hd = new(protoapi.HttpDesc)
+		hd = new(http.HttpDesc)
 		hd.Package = `api`
 		hd.Service = `StudentService`
 		hd.Method = `Del`
-		hd.DELETEPath = `/demo/students/:sno`
-		hd.DELETEFunc = func(ctx *protoapi.Context, in io.Reader) (interface{}, error) {
+		hd.DeletePath = `/demo/students/:sno`
+		hd.DeleteFunc = func(ctx *http.Context, in io.Reader) (interface{}, error) {
 			req := new(Student)
-			protoapi.ParamUint64(ctx, `sno`, &req.Sno)
+			http.ParamUint64(ctx, `sno`, &req.Sno)
 			if ctx.Request.URL.RawQuery != `` {
-				protoapi.QueryUint64(ctx, `sno`, &req.Sno)
-				protoapi.QueryString(ctx, `name`, &req.Name)
-				protoapi.QueryUint32(ctx, `age`, &req.Age)
-				protoapi.QueryBool(ctx, `male`, &req.Male)
-				protoapi.QueryString(ctx, `desc`, &req.Desc)
+				http.QueryUint64(ctx, `sno`, &req.Sno)
+				http.QueryString(ctx, `name`, &req.Name)
+				http.QueryUint32(ctx, `age`, &req.Age)
+				http.QueryBool(ctx, `male`, &req.Male)
+				http.QueryString(ctx, `desc`, &req.Desc)
 			}
 			err := json.NewDecoder(in).Decode(req)
 			if err != nil && err != io.EOF {
@@ -65,20 +65,20 @@ func StudentServiceRegistry(impl interface{}) (*grpc.ServiceDesc, []*protoapi.Ht
 		hds = append(hds, hd)
 	}
 	{
-		hd = new(protoapi.HttpDesc)
+		hd = new(http.HttpDesc)
 		hd.Package = `api`
 		hd.Service = `StudentService`
 		hd.Method = `Upd`
-		hd.PUTPath = `/demo/students/:sno`
-		hd.PUTFunc = func(ctx *protoapi.Context, in io.Reader) (interface{}, error) {
+		hd.PutPath = `/demo/students/:sno`
+		hd.PutFunc = func(ctx *http.Context, in io.Reader) (interface{}, error) {
 			req := new(Student)
-			protoapi.ParamUint64(ctx, `sno`, &req.Sno)
+			http.ParamUint64(ctx, `sno`, &req.Sno)
 			if ctx.Request.URL.RawQuery != `` {
-				protoapi.QueryUint64(ctx, `sno`, &req.Sno)
-				protoapi.QueryString(ctx, `name`, &req.Name)
-				protoapi.QueryUint32(ctx, `age`, &req.Age)
-				protoapi.QueryBool(ctx, `male`, &req.Male)
-				protoapi.QueryString(ctx, `desc`, &req.Desc)
+				http.QueryUint64(ctx, `sno`, &req.Sno)
+				http.QueryString(ctx, `name`, &req.Name)
+				http.QueryUint32(ctx, `age`, &req.Age)
+				http.QueryBool(ctx, `male`, &req.Male)
+				http.QueryString(ctx, `desc`, &req.Desc)
 			}
 			err := json.NewDecoder(in).Decode(req)
 			if err != nil && err != io.EOF {
@@ -89,20 +89,20 @@ func StudentServiceRegistry(impl interface{}) (*grpc.ServiceDesc, []*protoapi.Ht
 		hds = append(hds, hd)
 	}
 	{
-		hd = new(protoapi.HttpDesc)
+		hd = new(http.HttpDesc)
 		hd.Package = `api`
 		hd.Service = `StudentService`
 		hd.Method = `Get`
-		hd.GETPath = `/demo/students/:sno`
-		hd.GETFunc = func(ctx *protoapi.Context, in io.Reader) (interface{}, error) {
+		hd.GetPath = `/demo/students/:sno`
+		hd.GetFunc = func(ctx *http.Context, in io.Reader) (interface{}, error) {
 			req := new(Student)
-			protoapi.ParamUint64(ctx, `sno`, &req.Sno)
+			http.ParamUint64(ctx, `sno`, &req.Sno)
 			if ctx.Request.URL.RawQuery != `` {
-				protoapi.QueryUint64(ctx, `sno`, &req.Sno)
-				protoapi.QueryString(ctx, `name`, &req.Name)
-				protoapi.QueryUint32(ctx, `age`, &req.Age)
-				protoapi.QueryBool(ctx, `male`, &req.Male)
-				protoapi.QueryString(ctx, `desc`, &req.Desc)
+				http.QueryUint64(ctx, `sno`, &req.Sno)
+				http.QueryString(ctx, `name`, &req.Name)
+				http.QueryUint32(ctx, `age`, &req.Age)
+				http.QueryBool(ctx, `male`, &req.Male)
+				http.QueryString(ctx, `desc`, &req.Desc)
 			}
 			err := json.NewDecoder(in).Decode(req)
 			if err != nil && err != io.EOF {
@@ -110,15 +110,15 @@ func StudentServiceRegistry(impl interface{}) (*grpc.ServiceDesc, []*protoapi.Ht
 			}
 			return svc.Get(ctx, req)
 		}
-		hd.WBSKPath = `/demo/student/ws`
-		hd.WBSKFunc = func(ctx *protoapi.Context, in io.Reader) (interface{}, error) {
+		hd.WebsocketPath = `/demo/student/ws`
+		hd.WebsocketFunc = func(ctx *http.Context, in io.Reader) (interface{}, error) {
 			req := new(Student)
 			if ctx.Request.URL.RawQuery != `` {
-				protoapi.QueryUint64(ctx, `sno`, &req.Sno)
-				protoapi.QueryString(ctx, `name`, &req.Name)
-				protoapi.QueryUint32(ctx, `age`, &req.Age)
-				protoapi.QueryBool(ctx, `male`, &req.Male)
-				protoapi.QueryString(ctx, `desc`, &req.Desc)
+				http.QueryUint64(ctx, `sno`, &req.Sno)
+				http.QueryString(ctx, `name`, &req.Name)
+				http.QueryUint32(ctx, `age`, &req.Age)
+				http.QueryBool(ctx, `male`, &req.Male)
+				http.QueryString(ctx, `desc`, &req.Desc)
 			}
 			err := json.NewDecoder(in).Decode(req)
 			if err != nil && err != io.EOF {
@@ -129,19 +129,19 @@ func StudentServiceRegistry(impl interface{}) (*grpc.ServiceDesc, []*protoapi.Ht
 		hds = append(hds, hd)
 	}
 	{
-		hd = new(protoapi.HttpDesc)
+		hd = new(http.HttpDesc)
 		hd.Package = `api`
 		hd.Service = `StudentService`
 		hd.Method = `All`
-		hd.GETPath = `/demo/students`
-		hd.GETFunc = func(ctx *protoapi.Context, in io.Reader) (interface{}, error) {
+		hd.GetPath = `/demo/students`
+		hd.GetFunc = func(ctx *http.Context, in io.Reader) (interface{}, error) {
 			req := new(AllReq)
 			if ctx.Request.URL.RawQuery != `` {
-				protoapi.QueryInt32(ctx, `from`, &req.From)
-				protoapi.QueryInt32(ctx, `size`, &req.Size)
-				protoapi.QueryString(ctx, `search`, &req.Search)
-				protoapi.QueryString(ctx, `field`, &req.Field)
-				protoapi.QueryBool(ctx, `desc`, &req.Desc)
+				http.QueryInt32(ctx, `from`, &req.From)
+				http.QueryInt32(ctx, `size`, &req.Size)
+				http.QueryString(ctx, `search`, &req.Search)
+				http.QueryString(ctx, `field`, &req.Field)
+				http.QueryBool(ctx, `desc`, &req.Desc)
 			}
 			err := json.NewDecoder(in).Decode(req)
 			if err != nil && err != io.EOF {
@@ -178,5 +178,4 @@ func (s *StudentServiceService) Get(ctx context.Context, req *api.Student) (rsp 
 func (s *StudentServiceService) All(ctx context.Context, req *api.AllReq) (rsp *api.AllRsp, err error) {
 	return
 }
-
 ----------------------------SERVICES IMPLEMENT END----------------------------*/

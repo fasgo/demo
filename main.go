@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/fasgo/demo/api"
 	"github.com/fasgo/demo/biz"
-	"github.com/fasgo/protoapi"
+	"github.com/fasgo/http"
 )
 
 func main() {
@@ -21,19 +21,19 @@ func main() {
 }
 
 // 从conf.toml加载配置
-func serverWithConfToml() *protoapi.Server {
+func serverWithConfToml() *http.Server {
 	// load config from conf.toml
-	s := protoapi.NewServer()
+	s := http.NewServer()
 	return s
 }
 
 // 自己定义配置
-func serverWithConfig() *protoapi.Server {
-	c := &protoapi.Config{
+func serverWithConfig() *http.Server {
+	c := &http.Config{
 		HttpAddr:        ":80",
 		GrpcAddr:        ":90",
 		WbskCheckOrigin: -1,
 	}
-	s := protoapi.NewServerWith(c)
+	s := http.NewServerWith(c)
 	return s
 }

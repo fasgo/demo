@@ -23,7 +23,7 @@ type StudentServiceClient interface {
 	Del(ctx context.Context, in *Student, opts ...grpc.CallOption) (*Student, error)
 	// +PUT /demo/students/:sno
 	Upd(ctx context.Context, in *Student, opts ...grpc.CallOption) (*Student, error)
-	// +WBSK /demo/student/ws
+	// +websocket /demo/student/ws
 	// +GET /demo/students/:sno
 	Get(ctx context.Context, in *Student, opts ...grpc.CallOption) (*Student, error)
 	// +GET /demo/students
@@ -93,7 +93,7 @@ type StudentServiceServer interface {
 	Del(context.Context, *Student) (*Student, error)
 	// +PUT /demo/students/:sno
 	Upd(context.Context, *Student) (*Student, error)
-	// +WBSK /demo/student/ws
+	// +websocket /demo/student/ws
 	// +GET /demo/students/:sno
 	Get(context.Context, *Student) (*Student, error)
 	// +GET /demo/students
