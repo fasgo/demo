@@ -10,6 +10,3 @@ require (
 	google.golang.org/protobuf v1.25.0
 )
 
-replace (
-	github.com/fasgo/http v0.0.9 => ../http
-)
