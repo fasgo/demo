@@ -12,10 +12,10 @@ import (
 
 func init() {
 	registry.Init(&registry.Config{
-		Endpoint: "10.13.144.164:2379",
+		Endpoint: "localhost:2379",
 		Username: "root",
 		Password: "123456",
-		Debug:    false,
+		Debug:    true,
 	})
 }
 

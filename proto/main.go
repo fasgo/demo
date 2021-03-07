@@ -14,10 +14,10 @@ import (
 func init() {
 	// 初始化服务注册/发现
 	registry.Init(&registry.Config{
-		Endpoint: "10.13.144.164:2379",
+		Endpoint: "localhost:2379",
 		Username: "root",
 		Password: "123456",
-		Debug:    false,
+		Debug:    true,
 	})
 	// 初始化资源(I18N)文件
 	protoapi.InitResource("zh", `E:\pbxworkspace\src\github.com\fasgo\demo\proto\resources`)
