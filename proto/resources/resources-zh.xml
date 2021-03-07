@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- 内部DTD定义,使用时请忽略 -->
+<!DOCTYPE resources [
+        <!ELEMENT resource (code, message, status-code)>
+        <!ATTLIST accept-language CDATA "">
+        <!ELEMENT code (#PCDATA)>
+        <!ELEMENT message (#PCDATA)>
+        <!ELEMENT status-code (#PCDATA)>
+        ]>
+<!-- accept-language使用 iso_language_code或iso_language_code-ISO_COUNTRY_CODE, 多值用逗号分割 -->
+<resources accept-language="zh,zh-CN,zh-HK,zh-TW">
+    <resource>
+        <!-- 必需: 错误代码 -->
+        <code>1001</code>
+        <!-- 必需: 错误消息 -->
+        <message>学生不存在%v</message>
+        <!-- 可选: 状态码, 默认210 -->
+        <status-code>404</status-code>
+    </resource>
+</resources>

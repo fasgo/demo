@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package api;
+
+import "github.com/fasgo/protoapi/http.proto";
+
+// 定义班级信息
+message Clazz {
+  int64 cno = 1; // 班级编号
+  string name = 2; // 班级名称
+  string desc = 3; // 班级描述
+}
+
+// 定义学生信息
+// +TABLE -name=student -engine=InnoDB -comment=学生测试表
+message Student {
+  // +COLUMN -name=s_no -comment="学生编号"
+  string sno = 1 ; // 学生编号
+  string name = 2; // 学生名称
+  uint32 gender = 3; // 性别
+  int32  grade = 4; // 排名
+  repeated float  score = 5; // 多门评分
+  Clazz  clazz = 6; // 班级信息
+}
+
+// 定义all请求
+message AllReq {
+  int32 from = 1; // 分页开始下标(从0开始)
+  int32 size = 2; // 分页大小
+  string search = 3; // 模糊查询的输入内容
+  string field = 4; // 查询结果排序字段
+  bool desc = 5; // 查询结果排序是否DESC
+}
+
+// 定义all响应
+message AllRsp{
+  int32  total = 1; //查询结果总数
+  repeated Student data = 2; // 查询结果数据
+}
+
+// 定义Tag服务(请使用Go命名规范), 可以通过@Path指定URI, 默认/<package>/<service>/<method>
+service TagService {
+
+  rpc All(AllReq) returns (AllRsp){
+    option (protoapi.http) = {method: GET, path:"/demo/students"}; // 生成restful接口"get /demo/students"
+//    option (protoapi.http) = {method: WEBSOCKET, path:"/demo/students/ws"}; // 生成websocket接口"ws /demo/students/ws"
+  }
+
+  rpc Get(Student) returns (Student){
+    option (protoapi.http) = {method: GET, path:"/demo/students/:sno"}; // 生成restful接口"get /demo/students/:sno"
+  }
+}

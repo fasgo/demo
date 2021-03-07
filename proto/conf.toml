@@ -1,0 +1,9 @@
+[etcd]
+endpoint = "10.13.144.164:2379"
+username = "root"
+password = "123456"
+
+[http]
+http_addr = ":8080"
+grpc_addr = ":9080"
+wbsk_origin_disable = true
